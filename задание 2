@@ -1,0 +1,65 @@
+program paromova;
+
+function DecimalToBinary(decimal: Real; precision: Integer): String;
+var
+  integerPart: Integer;
+  fractionalPart: Real;
+  binaryInteger: String;
+  binaryFraction: String;
+  i: Integer;
+begin
+  // Отделяем целую и дробную части
+  integerPart := Trunc(decimal);
+  fractionalPart := decimal - integerPart;
+
+  // Переводим целую часть в двоичную
+  binaryInteger := '';
+  if integerPart = 0 then
+    binaryInteger := '0';
+  
+  while integerPart > 0 do
+  begin
+    binaryInteger := IntToStr(integerPart mod 2) + binaryInteger;
+    integerPart := integerPart div 2;
+  end;
+
+  // Переводим дробную часть в двоичную
+  binaryFraction := '';
+  for i := 1 to precision do
+  begin
+    fractionalPart := fractionalPart * 2;
+    if fractionalPart >= 1 then
+    begin
+      binaryFraction := binaryFraction + '1';
+      fractionalPart := fractionalPart - 1;
+    end
+    else
+      binaryFraction := binaryFraction + '0';
+    
+    // Если дробная часть стала равной нулю, выходим из цикла
+    if fractionalPart = 0 then
+      Break;
+  end;
+
+  // Объединяем целую и дробную части
+  if binaryFraction <> '' then
+    DecimalToBinary := binaryInteger + '.' + binaryFraction
+  else
+    DecimalToBinary := binaryInteger;
+end;
+
+var
+  decimalNumber: Real;
+  precision: Integer;
+
+begin
+
+  write('Введите десятичное число (может быть дробным): ');
+  readln(decimalNumber);
+
+  write('Введите количество знаков после запятой в двоичной системе: ');
+  readln(precision);
+
+  writeln('Двоичное представление: ', DecimalToBinary(decimalNumber, precision));
+  
+end.
