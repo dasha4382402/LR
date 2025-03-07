@@ -1,0 +1,35 @@
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        // Целые числа
+        int integerVariable = 123456;
+        long longVariable = 1234567890123456789;
+        byte byteVariable = 255;
+
+        // Вещественные числа
+        float floatVariable = 123.45f;
+        double doubleVariable = 123.456789;
+
+        // Строки
+        string stringVariable = "Hello";
+
+        // Печать побайтового представления
+        Console.WriteLine("Тип: int, Значение: {0}, Побайтовое представление: {1}", integerVariable, BitConverter.ToString(BitConverter.GetBytes(integerVariable)));
+        Console.WriteLine("Тип: long, Значение: {0}, Побайтовое представление: {1}", longVariable, BitConverter.ToString(BitConverter.GetBytes(longVariable)));
+        Console.WriteLine("Тип: byte, Значение: {0}, Побайтовое представление: {1}", byteVariable, BitConverter.ToString(new byte[] { byteVariable })); // byte: отдельный массив
+        Console.WriteLine("Тип: float, Значение: {0}, Побайтовое представление: {1}", floatVariable, BitConverter.ToString(BitConverter.GetBytes(floatVariable)));
+        Console.WriteLine("Тип: double, Значение: {0}, Побайтовое представление: {1}", doubleVariable, BitConverter.ToString(BitConverter.GetBytes(doubleVariable)));
+        
+        // Для строк нужно обрабатывать каждый символ
+        Console.WriteLine("Тип: string, Значение: {0}, Побайтовое представление:", stringVariable);
+        foreach (char c in stringVariable)
+        {
+            byte[] bytes = BitConverter.GetBytes(c);
+            Console.Write(BitConverter.ToString(bytes) + " "); // выводим байтовое представление каждого символа
+        }
+        Console.WriteLine();
+    }
+}
