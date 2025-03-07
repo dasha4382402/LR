@@ -1,0 +1,143 @@
+program NumberConverter;
+
+
+function DecimalToBinary(decimal: Integer): String;
+var
+  binary: String;
+begin
+  binary := '';
+  while decimal > 0 do
+  begin
+    binary := IntToStr(decimal mod 2) + binary;
+    decimal := decimal div 2;
+  end;
+  if binary = '' then
+    binary := '0';
+  DecimalToBinary := binary;
+end;
+
+function DecimalToOctal(decimal: Integer): String;
+var
+  octal: String;
+begin
+  octal := '';
+  while decimal > 0 do
+  begin
+    octal := IntToStr(decimal mod 8) + octal;
+    decimal := decimal div 8;
+  end;
+  if octal = '' then
+    octal := '0';
+  DecimalToOctal := octal;
+end;
+
+function DecimalToHexadecimal(decimal: Integer): String;
+var
+  hexadecimal: String;
+begin
+  hexadecimal := '';
+  while decimal > 0 do
+  begin
+    case decimal mod 16 of
+      0..9: hexadecimal := IntToStr(decimal mod 16) + hexadecimal;
+      10: hexadecimal := 'A' + hexadecimal;
+      11: hexadecimal := 'B' + hexadecimal;
+      12: hexadecimal := 'C' + hexadecimal;
+      13: hexadecimal := 'D' + hexadecimal;
+      14: hexadecimal := 'E' + hexadecimal;
+      15: hexadecimal := 'F' + hexadecimal;
+    end;
+    decimal := decimal div 16;
+  end;
+  if hexadecimal = '' then
+    hexadecimal := '0';
+  DecimalToHexadecimal := hexadecimal;
+end;
+
+function BinaryToDecimal(binary: String): Integer;
+var
+  decimal, i: Integer;
+begin
+  decimal := 0;
+  for i := 1 to Length(binary) do
+    decimal := decimal * 2 + StrToInt(binary[i]);
+  BinaryToDecimal := decimal;
+end;
+
+function HexadecimalToDecimal(hexadecimal: String): Integer;
+var
+  decimal, i, digitValue: Integer;
+begin
+  decimal := 0;
+  for i := 1 to Length(hexadecimal) do
+  begin
+    if hexadecimal[i] in ['0'..'9'] then
+      digitValue := Ord(hexadecimal[i]) - Ord('0')
+    else if hexadecimal[i] in ['A'..'F'] then
+      digitValue := Ord(hexadecimal[i]) - Ord('A') + 10
+    else
+      digitValue := Ord(hexadecimal[i]) - Ord('a') + 10; // на случай, если введены строчные буквы
+
+    decimal := decimal * 16 + digitValue;
+  end;
+  HexadecimalToDecimal := decimal;
+end;
+
+var
+  choice, decimalNumber: Integer;
+  binaryNumber, hexadecimalNumber: String;
+
+begin
+
+  repeat
+    writeln('Выберите действие:');
+    writeln('1. Десятичная в двоичную');
+    writeln('2. Десятичная в восьмеричную');
+    writeln('3. Десятичная в шестнадцатеричную');
+    writeln('4. Двоичная в десятичную');
+    writeln('5. Шестнадцатеричная в десятичную');
+    writeln('6. Выход');
+
+    readln(choice);
+
+    case choice of
+      1:
+        begin
+          write('Введите десятичное число: ');
+          readln(decimalNumber);
+          writeln('Двоичное представление: ', DecimalToBinary(decimalNumber));
+        end;
+      2:
+        begin
+          write('Введите десятичное число: ');
+          readln(decimalNumber);
+          writeln('Восьмеричное представление: ', DecimalToOctal(decimalNumber));
+        end;
+      3:
+        begin
+          write('Введите десятичное число: ');
+          readln(decimalNumber);
+          writeln('Шестнадцатеричное представление: ', DecimalToHexadecimal(decimalNumber));
+        end;
+      4:
+        begin
+          write('Введите двоичное число: ');
+          readln(binaryNumber);
+          writeln('Десятичное представление: ', BinaryToDecimal(binaryNumber));
+        end;
+      5:
+        begin
+          write('Введите шестнадцатеричное число: ');
+          readln(hexadecimalNumber);
+          writeln('Десятичное представление: ', HexadecimalToDecimal(hexadecimalNumber));
+        end;
+      6:
+        writeln('Выход из программы.');
+    else
+      writeln('Неверный выбор. Попробуйте снова.');
+    end;
+
+    writeln; // Пустая строка для удобства вывода
+  until choice = 6; // Цикл продолжается до тех пор, пока не выбран выход
+
+end.
